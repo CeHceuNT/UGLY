@@ -1,7 +1,7 @@
 <#import "parts/common.ftlh" as c>
 
 <@c.page>
-List of user
+Ugly users
 <table>
     <thead>
     <tr>
