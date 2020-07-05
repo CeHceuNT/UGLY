@@ -16,12 +16,13 @@ import java.util.Map;
 @RequestMapping("/user")
 public class UserController {
     @Autowired
-    private UserService userService;
+    private UserService userSevice;
 
     @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping
     public String userList(Model model) {
-        model.addAttribute("users", userService.findAll());
+        model.addAttribute("users", userSevice.findAll());
+
         return "userList";
     }
 
@@ -30,17 +31,19 @@ public class UserController {
     public String userEditForm(@PathVariable User user, Model model) {
         model.addAttribute("user", user);
         model.addAttribute("roles", Role.values());
-        return  "userEdit";
+
+        return "userEdit";
     }
 
     @PreAuthorize("hasAuthority('ADMIN')")
     @PostMapping
     public String userSave(
             @RequestParam String username,
-            @RequestParam Map<String, Object> form,
+            @RequestParam Map<String, String> form,
             @RequestParam("userId") User user
     ) {
-        userService.saveUser(user, username,form);
+        userSevice.saveUser(user, username,form);
+
         return "redirect:/user";
     }
 
@@ -58,9 +61,8 @@ public class UserController {
             @RequestParam String password,
             @RequestParam String email
     ) {
-        userService.updateProfile(user, password, email);
+        userSevice.updateProfile(user, password, email);
 
         return "redirect:/user/profile";
     }
-
 }
